@@ -40,4 +40,8 @@ Now, you need to prepare your Terminal Server for the PST Import Service.
         - azcopy.exe from Microsoft.
         - Script "pstis.bat" that will migrate PST-files from "PST Import Service$" to Azure Blob Storage.
     -  Shortcut "Execute PST Import Service" -script. This is shortcut of "pstis.bat" -script.
+
+    Screenshots:
+       [Screenshot]
+       [Screenshot]
 2. Share folder "PST Import Service$" to security group "CC-SG PST Import Service Users".
