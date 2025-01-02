@@ -42,6 +42,14 @@ Now, you need to prepare your Terminal Server for the PST Import Service.
     -  Shortcut "Execute PST Import Service" -script. This is shortcut of "pstis.bat" -script.
 
     Screenshots:
-       [Screenshot]
-       [Screenshot]
-2. Share folder "PST Import Service$" to security group "CC-SG PST Import Service Users".
+   [Screenshot]
+   [Screenshot]
+2. Share folder "PST Import Service$" to security group "CC-SG PST Import Service Users". Users that are part of the Security group must have full control. Screenhots of permissions:
+   [Screenshot]
+   [Screenshot]
+   [Screenshot]
+   [Screenshot]
+   [Screenshot]
+   [Screenshot]
+   [Screenshot]
+   [Screenshot]  
