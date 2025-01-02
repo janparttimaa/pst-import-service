@@ -15,4 +15,20 @@ Purpose and goal of PST Import Service is that employee can share PST-files to I
     - Hard drive must have following 2 folders (one hidden folder and one visible folder):
         - PST Import Service$
         - Tools
+- Admin and Remote Desktop access to Windows Server.
 - Access to [Microsoft Purview](https://compliance.microsoft.com/) -portal as Admin.
+- Make sure that you are following [requirements](https://learn.microsoft.com/en-us/purview/use-network-upload-to-import-pst-files#optional-step-3-view-a-list-of-the-pst-files-uploaded-to-microsoft-365) from Microsoft.
+- Ticketing system e.g. Jira Service Management, where employees can send onboarding requests regarding to PST Import Service.
+- Intranet-site running, for example, on SharePoint Online.
+
+## Intranet-page of PST Import Service
+First, create dedicated Intranet-page of PST Import Service on your company's local Intranet-site so users can read more information regarding to the PST Import Servcie and they can also have access to send onboarding request to the service if needed. Here is the example how the Intranet-page should look like:
+
+[Screenshot]
+
+## Dedicated ticket category of PST Import Service
+Second, create dedicated ticket category to your ticketing system so employees can send onboarding requests. Link the ticket category to your Intranet-page as well. In this example, we created dedicated ticket category using Jira Service Management as ticketing system:
+
+[Screenshot]
+
+## Prepare Terminal Server to PST Import Service
