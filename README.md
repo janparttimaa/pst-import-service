@@ -12,14 +12,13 @@ Purpose and goal of PST Import Service is that employee can share PST-files to I
     - Distributing folder share to employees so they can move their PST-files.
     - Uploading PST-files to Azure Blob Storage for migration.
 - Separate hard drive to Windows Server called "PST Import Service".
-    - Hard drive must have following 2 folders (one hidden folder and one visible folder):
-        - PST Import Service$
-        - Tools
+    - Size of the hard drive must be 100 GB or larger, e.g. 250 GB is suitable.
 - Admin and Remote Desktop access to Windows Server.
 - Access to [Microsoft Purview](https://compliance.microsoft.com/) -portal as Admin.
 - Make sure that you are following [requirements](https://learn.microsoft.com/en-us/purview/use-network-upload-to-import-pst-files#optional-step-3-view-a-list-of-the-pst-files-uploaded-to-microsoft-365) from Microsoft.
 - Ticketing system e.g. Jira Service Management, where employees can send onboarding requests regarding to PST Import Service.
 - Intranet-site running, for example, on SharePoint Online.
+- Security Group where we can share folder when users can move their PST-files. Name of the securitry group can be e.g. "CC-SG PST Import Service Users". Replace "CC" with your country code.
 
 ## Intranet-page of PST Import Service
 First, create dedicated Intranet-page of PST Import Service on your company's local Intranet-site so users can read more information regarding to the PST Import Servcie and they can also have access to send onboarding request to the service if needed. Here is the example how the Intranet-page should look like:
@@ -31,4 +30,14 @@ Second, create dedicated ticket category to your ticketing system so employees c
 
 [Screenshot]
 
+Add appropriate description. Make ticket category also as simple as possible. In this example, only think employee needs to do is click "Create".
+
 ## Prepare Terminal Server to PST Import Service
+Now, you need to prepare your Terminal Server for the PST Import Service. 
+1. Install "Onboard Terminal Server" -packet to Terminal Server. This packet will create following:
+    -  Hidden folder "PST Import Service$", where users can move their PST-files for migration.
+    -  "Tools"-folder that includes needed tools. This folder includes following tools:
+        - azcopy.exe from Microsoft.
+        - Script "pstis.bat" that will migrate PST-files from "PST Import Service$" to Azure Blob Storage.
+    -  Shortcut "Execute PST Import Service" -script. This is shortcut of "pstis.bat" -script.
+2. Share folder "PST Import Service$" to security group "CC-SG PST Import Service Users".
