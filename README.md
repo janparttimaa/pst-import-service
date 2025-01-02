@@ -61,9 +61,9 @@ Now, you need to prepare your Terminal Server for the PST Import Service.
 ## Prepare network drive deployment
 Next, create either Group Policy or Intune Configuration Profile that will mount following network drive location to users that are part of "CC-SG PST Import Service Users":
 
-´´
+`
 \\terminalserver.example.com\PST Import Service$\%username%
-´´
+`
 Replace "terminalserver.example.com" to your terminal server address.
 
 Here is the example of GPO:
