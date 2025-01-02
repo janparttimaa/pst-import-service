@@ -59,3 +59,16 @@ Now, you need to prepare your Terminal Server for the PST Import Service.
     - Remote Desktop Users
   
 ## Prepare network drive deployment
+Next, create either Group Policy or Intune Configuration Profile that will mount following network drive location to users that are part of "CC-SG PST Import Service Users":
+
+´´´
+\\terminalserver.example.com\PST Import Service$\%username%
+´´´
+Replace "terminalserver.example.com" to your terminal server address.
+
+Here is the example of GPO:
+[Screenshot]
+[Screenshot]
+[Screenshot]
+
+Make sure that when user have removed from security group, network drive will be also removed from user automatically.
