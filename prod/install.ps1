@@ -7,7 +7,7 @@
     NOTE: You need to do some preparations before and after deploying this script. Please check preparation instructions from GitHub.
 
 .VERSION
-    1.0.0
+    20250309
 
 .AUTHOR
     Jan Parttimaa (https://github.com/janparttimaa/pst-import-service)
@@ -20,7 +20,7 @@
     You may obtain a copy of the License at https://opensource.org/licenses/MIT
 
 .RELEASE NOTES
-    1.0.0 - Initial release
+    20250309 - Initial release
 
 .EXAMPLE
     powershell.exe -ExecutionPolicy Bypass -File .\install.ps1
@@ -46,7 +46,7 @@ function Get-ValidDriveLetter {
 }
 
 # Ask for the drive letter
-$driveLetter = Get-ValidDriveLetter -promptMessage "Enter the drive letter where you want to create the folders (e.g., F:)"
+$driveLetter = Get-ValidDriveLetter -promptMessage "Enter the drive letter where you want to onboard PST Import Service (e.g., F:)"
 
 # Create hidden folder "PST Import Service$" and visible folder "Tools"
 Write-Host "Creating hidden folder 'PST Import Service$'..." -Verbose
@@ -81,7 +81,7 @@ $batchScript = @"
 @echo off
 chcp 65001>nul
 TITLE PST Import Service
-echo PST Import Service [Version 1.0]  && echo (c) 2024-2025 Jan Parttimaa. All rights reserved.
+echo PST Import Service [Version 20250309]  && echo (c) 2024-2025 Jan Parttimaa. All rights reserved.
 echo.
 echo Type username of employee which PST-files will be imported and press Enter.
 echo.
@@ -109,4 +109,4 @@ $shortcutShortcut.TargetPath = $shortcutTarget
 $shortcutShortcut.IconLocation = $shortcutIcon
 $shortcutShortcut.Save()
 
-Write-Host "Folders and files created successfully!" -Verbose
+Write-Host "Folders and files for PST Import Service created successfully to specified drive!" -Verbose
