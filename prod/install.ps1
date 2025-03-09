@@ -1,4 +1,4 @@
-﻿﻿<#
+﻿<#﻿
 .SYNOPSIS
     Set up PST Import Service files to Windows Server
 
@@ -26,6 +26,7 @@
     powershell.exe -ExecutionPolicy Bypass -File .\install.ps1
 
     This example is how to run this script running Windows PowerShell. Run this command with your admin rights.
+
 #>
 
 # Function to check if the drive letter exists
