@@ -68,14 +68,12 @@ Expand-Archive -Path $azCopyPath -DestinationPath "$driveLetter\Tools" -Verbose
 Write-Host "Finding the name of the extracted AzCopy folder..." -Verbose
 $extractedFolder = Get-ChildItem -Path "$driveLetter\Tools" | Where-Object { $_.PSIsContainer -and $_.Name -like "azcopy*" } | Select-Object -First 1
 
-# Move azcopy.exe to Tools folder and delete the zip file
+# Move azcopy.exe to Tools folder and delete the zip file and extracted folder
 Write-Host "Moving azcopy.exe to Tools folder..." -Verbose
 Move-Item -Path "$($extractedFolder.FullName)\azcopy.exe" -Destination "$driveLetter\Tools\azcopy.exe" -Verbose
 Write-Host "Deleting AzCopy zip file..." -Verbose
 Remove-Item -Path $azCopyPath -Verbose
-
-# Output the name of the extracted folder
-Write-Host "The extracted folder name is: $($extractedFolder.Name)" -Verbose
+Remove-Item -Path "$driveLetter\Tools\$extractedFolder" -Force -Recurse -Verbose
 
 # Create the batch script "pstis.bat"
 Write-Host "Creating batch script 'pstis.bat'..." -Verbose
