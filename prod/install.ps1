@@ -1,13 +1,13 @@
 ﻿<#﻿
 .SYNOPSIS
-    Set up PST Import Service files to Windows Server
+    Set up PST Import Service files to Windows Server.
 
 .DESCRIPTION
-    This PowerShell-script will set up PST Import Service files to Windows Server
+    This PowerShell-script will set up PST Import Service files to Windows Server.
     NOTE: You need to do some preparations before and after deploying this script. Please check preparation instructions from GitHub.
 
 .VERSION
-    20250309
+    20250311
 
 .AUTHOR
     Jan Parttimaa (https://github.com/janparttimaa/pst-import-service)
@@ -21,6 +21,7 @@
 
 .RELEASE NOTES
     20250309 - Initial release
+    20250311 - Added command that says when script will be closed after all needed things are done.
 
 .EXAMPLE
     powershell.exe -ExecutionPolicy Bypass -File .\install.ps1
@@ -100,6 +101,7 @@ Set-Content -Path $batchScriptPath -Value $batchScript -Verbose
 
 # Create shortcut to "pstis.bat" in the root of the specified drive
 Write-Host "Creating shortcut to 'pstis.bat' in the root of the specified drive..." -Verbose
+
 $shortcut = New-Object -ComObject WScript.Shell
 $shortcutPath = "$driveLetter\Execute PST Import Service.lnk"
 $shortcutTarget = $batchScriptPath
@@ -110,3 +112,4 @@ $shortcutShortcut.IconLocation = $shortcutIcon
 $shortcutShortcut.Save()
 
 Write-Host "Folders and files for PST Import Service created successfully to specified drive!" -Verbose
+Write-Host "Closing script..." -Verbose
