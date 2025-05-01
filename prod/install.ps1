@@ -1,4 +1,4 @@
-﻿<#﻿
+﻿<#
 .SYNOPSIS
     Set up PST Import Service files to Windows Server.
 
