@@ -99,7 +99,7 @@ E.g if the drive letter is E, log can be found from "E:\Logs\monthlycleanup.log"
 
 Here is the example screenshot of the content of the log:
 
-<kbd><img src= "./img/log1.png" alt="Screenshot"></kbd>
+<kbd><img src= "./img/log.png" alt="Screenshot"></kbd>
 
 ## Updating PST Import Service
 If you want to update PST Import Service with latest changes and big fixes, just run the latest version of installation script again with your admin rights on your Terminal Server, where you have originally run the installation script.
