@@ -46,14 +46,23 @@ Now, you need to prepare your Terminal Server for the PST Import Service.
     ![Screenshot](/img/fileexplorer1.png)
     ![Screenshot](/img/fileexplorer2.png)
 2. Share folder "PST Import Service$" to security group "CC-SG PST Import Service Users". Users that are part of the Security group must have full control. Screenhots of permissions:
-   ![Screenshot](/img/permissions1.png)
-   ![Screenshot](/img/permissions2.png)
-   ![Screenshot](/img/permissions3.png)
-   ![Screenshot](/img/permissions4.png)
-   ![Screenshot](/img/permissions5.png)
-   ![Screenshot](/img/permissions6.png)
-   ![Screenshot](/img/permissions7.png)
-   ![Screenshot](/img/permissions8.png)
+
+   <kbd><img src= "./img/permissions1.png" alt="Screenshot"> </kbd>
+
+   <kbd><img src= "./img/permissions2.png" alt="Screenshot"> </kbd>
+
+   <kbd><img src= "./img/permissions3.png" alt="Screenshot"> </kbd>
+
+   <kbd><img src= "./img/permissions4.png" alt="Screenshot"> </kbd>
+
+   <kbd><img src= "./img/permissions5.png" alt="Screenshot"> </kbd>
+
+   <kbd><img src= "./img/permissions6.png" alt="Screenshot"> </kbd>
+
+   <kbd><img src= "./img/permissions7.png" alt="Screenshot"> </kbd>
+
+   <kbd><img src= "./img/permissions8.png" alt="Screenshot"> </kbd>
+
 3. Make sure that security group "CC-SG Intune PST Import Service Operators" is part of the following built-in restricted groups from the server:
     - Administrators
     - Remote Desktop Users
@@ -70,7 +79,9 @@ Note that variable "%username%" is really important as this is the way, we can o
 
 Here is the example of GPO:
 <kbd><img src= "./img/gpo1.png" alt="Screenshot"> </kbd>
+
 <kbd><img src= "./img/gpo2.png" alt="Screenshot"> </kbd>
+
 <kbd><img src= "./img/gpo3.png" alt="Screenshot"> </kbd>
 
 Make sure that when user have removed from security group, network drive will be also removed from user automatically.
