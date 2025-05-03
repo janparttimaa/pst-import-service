@@ -78,9 +78,14 @@ Make sure that when user have removed from security group, network drive will be
 ## Scheduled task and its log (Starting version 20250503)
 Starting with version 20250503, installation script will implement scheduled task to Terminal Server that will clear our hidden PST Import Service folder from all of its contents on every 1 day of the month at 00:00 local time. This will make sure, that we have retention period set inplace to the PST Import Service if IT personnel forgets to delete the content(s) after uploading them to Azure Blob Storage.
 
-Log of the retention period actions can be found from "Logs\monthlycleanup.txt" folder from the drive letter where PST Import Service is locating on the Terminal Server.
+Log of the retention period actions can be found from "Logs\monthlycleanup.log" folder from the drive letter where PST Import Service is locating on the Terminal Server.
 
-E.g if the drive letter is E, log can be found from "E:\Logs\monthlycleanup.txt" on your Terminal Server.
+E.g if the drive letter is E, log can be found from "E:\Logs\monthlycleanup.log" on your Terminal Server.
+
+Here is the example screenshot of the content of the log:
+
+<kbd><img src= "./img/log1.png" alt="Screenshot from log file"> </kbd>
+
 
 ## Updating PST Import Service
 If you want to update PST Import Service with latest changes and big fixes, just run the latest version of installation script again with your admin rights on your Terminal Server, where you have originally ran the installation script.

@@ -23,7 +23,7 @@
     20250309 - Initial release.
     20250311 - Added command that says when script will be closed after all needed things are done.
     20250503 - Added scheduled task for retention period. Hidden PST Import Service -folder will be cleared out of contents every 1 day of the month at 0:00 local time.
-             - Log of the retention period actions can be found from "Logs\monthlycleanup.txt" folder from the drive letter where PST Import Service is.
+             - Log of the retention period actions can be found from "Logs\monthlycleanup.log" folder from the drive letter where PST Import Service is.
 
 .EXAMPLE
     powershell.exe -ExecutionPolicy Bypass -File .\install.ps1
@@ -73,6 +73,12 @@ Expand-Archive -Path $azCopyPath -DestinationPath "$driveLetter\$tools" -Verbose
 # Find the name of the extracted folder
 Write-Host "Finding the name of the extracted AzCopy folder..." -Verbose
 $extractedFolder = Get-ChildItem -Path "$driveLetter\$tools" | Where-Object { $_.PSIsContainer -and $_.Name -like "azcopy*" } | Select-Object -First 1
+
+# Check if existing old file azcopy.exe exists at the destination
+if (Test-Path -Path "$driveLetter\$tools\azcopy.exe") {
+    # Remove existing old file of azcopy.exe
+    Remove-Item -Path "$driveLetter\$tools\azcopy.exe" -Force
+    }
 
 # Move azcopy.exe to Tools folder and delete the zip file and extracted folder
 Write-Host "Moving azcopy.exe to Tools folder..." -Verbose
@@ -128,9 +134,9 @@ $scriptContent = @"
 
 if ((Get-Date).Day -eq 1) {
     Get-ChildItem -Path "$folderPath" -Recurse -Force | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
-    Write-Output "`$(Get-Date -Format 'u'): First day of the month - Therefore, content have been cleared from folder ""$folderPath""." | Out-File "$driveLetter\$logs\monthlycleanup.txt" -Append
+    Write-Output "`$(Get-Date -Format 'u'): First day of the month - Therefore, content have been cleared from folder ""$folderPath""." | Out-File "$driveLetter\$logs\monthlycleanup.log" -Append
 } else {
-    Write-Output "`$(Get-Date -Format 'u'): Not first day of the month - No need to content cleanup." | Out-File "$driveLetter\$logs\monthlycleanup.txt" -Append
+    Write-Output "`$(Get-Date -Format 'u'): Not first day of the month - No need to content cleanup." | Out-File "$driveLetter\$logs\monthlycleanup.log" -Append
 }
 "@
 
