@@ -24,12 +24,12 @@ Purpose and goal of PST Import Service is that employee can share PST-files to I
 ## Intranet-page of PST Import Service
 First, create dedicated Intranet-page of PST Import Service on your company's local Intranet-site so users can read more information regarding to the PST Import Servcie and they can also have access to send onboarding request to the service if needed. Here is the example how the Intranet-page should look like:
 
-![Screenshot](/img/intranet.png)
+<kbd><img src= "./img/intranet.png" alt="Screenshot"></kbd>
 
 ## Dedicated ticket category of PST Import Service
 Second, create dedicated ticket category to your ticketing system so employees can send onboarding requests. Link the ticket category to your Intranet-page as well. In this example, we created dedicated ticket category using Jira Service Management as ticketing system:
 
-![Screenshot](/img/ticketcategory.png)
+<kbd><img src= "./img/ticketcategory.png" alt="Screenshot"></kbd>
 
 Add appropriate description. Make ticket category also as simple as possible. In this example, only think employee needs to do is click "Create".
 
@@ -43,25 +43,28 @@ Now, you need to prepare your Terminal Server for the PST Import Service.
     -  Shortcut "Execute PST Import Service" -script. This is shortcut of "pstis.bat" -script.
 
     Screenshots:
-    ![Screenshot](/img/fileexplorer1.png)
-    ![Screenshot](/img/fileexplorer2.png)
+
+    <kbd><img src= "./img/fileexplorer1.png" alt="Screenshot"></kbd>
+
+    <kbd><img src= "./img/fileexplorer2.png" alt="Screenshot"></kbd>
+ 
 2. Share folder "PST Import Service$" to security group "CC-SG PST Import Service Users". Users that are part of the Security group must have full control. Screenhots of permissions:
 
-   <kbd><img src= "./img/permissions1.png" alt="Screenshot"> </kbd>
+   <kbd><img src= "./img/permissions1.png" alt="Screenshot"></kbd>
 
-   <kbd><img src= "./img/permissions2.png" alt="Screenshot"> </kbd>
+   <kbd><img src= "./img/permissions2.png" alt="Screenshot"></kbd>
 
-   <kbd><img src= "./img/permissions3.png" alt="Screenshot"> </kbd>
+   <kbd><img src= "./img/permissions3.png" alt="Screenshot"></kbd>
 
-   <kbd><img src= "./img/permissions4.png" alt="Screenshot"> </kbd>
+   <kbd><img src= "./img/permissions4.png" alt="Screenshot"></kbd>
 
-   <kbd><img src= "./img/permissions5.png" alt="Screenshot"> </kbd>
+   <kbd><img src= "./img/permissions5.png" alt="Screenshot"></kbd>
 
-   <kbd><img src= "./img/permissions6.png" alt="Screenshot"> </kbd>
+   <kbd><img src= "./img/permissions6.png" alt="Screenshot"></kbd>
 
-   <kbd><img src= "./img/permissions7.png" alt="Screenshot"> </kbd>
+   <kbd><img src= "./img/permissions7.png" alt="Screenshot"></kbd>
 
-   <kbd><img src= "./img/permissions8.png" alt="Screenshot"> </kbd>
+   <kbd><img src= "./img/permissions8.png" alt="Screenshot"></kbd>
 
 3. Make sure that security group "CC-SG Intune PST Import Service Operators" is part of the following built-in restricted groups from the server:
     - Administrators
@@ -78,11 +81,12 @@ Replace "terminalserver.example.com" to your terminal server address.
 Note that variable "%username%" is really important as this is the way, we can only give access to dedicated folder for users where users can migrate their PST-files and cannot access to another user's uploaded PST-files.
 
 Here is the example of GPO:
-<kbd><img src= "./img/gpo1.png" alt="Screenshot"> </kbd>
 
-<kbd><img src= "./img/gpo2.png" alt="Screenshot"> </kbd>
+<kbd><img src= "./img/gpo1.png" alt="Screenshot"></kbd>
 
-<kbd><img src= "./img/gpo3.png" alt="Screenshot"> </kbd>
+<kbd><img src= "./img/gpo2.png" alt="Screenshot"></kbd>
+
+<kbd><img src= "./img/gpo3.png" alt="Screenshot"></kbd>
 
 Make sure that when user have removed from security group, network drive will be also removed from user automatically.
 
@@ -95,7 +99,7 @@ E.g if the drive letter is E, log can be found from "E:\Logs\monthlycleanup.log"
 
 Here is the example screenshot of the content of the log:
 
-<kbd><img src= "./img/log1.png" alt="Screenshot from log file"> </kbd>
+<kbd><img src= "./img/log1.png" alt="Screenshot"></kbd>
 
 ## Updating PST Import Service
 If you want to update PST Import Service with latest changes and big fixes, just run the latest version of installation script again with your admin rights on your Terminal Server, where you have originally ran the installation script.
