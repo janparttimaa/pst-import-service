@@ -69,9 +69,9 @@ Replace "terminalserver.example.com" to your terminal server address.
 Note that variable "%username%" is really important as this is the way, we can only give access to dedicated folder for users where users can migrate their PST-files and cannot access to another user's uploaded PST-files.
 
 Here is the example of GPO:
-![Screenshot](/img/gpo1.png)
-![Screenshot](/img/gpo2.png)
-![Screenshot](/img/gpo3.png)
+<kbd><img src= "./img/gpo1.png" alt="Screenshot"> </kbd>
+<kbd><img src= "./img/gpo2.png" alt="Screenshot"> </kbd>
+<kbd><img src= "./img/gpo3.png" alt="Screenshot"> </kbd>
 
 Make sure that when user have removed from security group, network drive will be also removed from user automatically.
 
@@ -85,7 +85,6 @@ E.g if the drive letter is E, log can be found from "E:\Logs\monthlycleanup.log"
 Here is the example screenshot of the content of the log:
 
 <kbd><img src= "./img/log1.png" alt="Screenshot from log file"> </kbd>
-
 
 ## Updating PST Import Service
 If you want to update PST Import Service with latest changes and big fixes, just run the latest version of installation script again with your admin rights on your Terminal Server, where you have originally ran the installation script.
