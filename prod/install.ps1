@@ -137,9 +137,9 @@ $scriptContent = @"
 
 if ((Get-Date).Day -eq 1) {
     Get-ChildItem -Path "$folderPath" -Recurse -Force | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
-    Write-Output "`PST Import Service [Version $version], $(Get-Date -Format 'u'): First day of the month - Therefore, content have been cleared from folder ""$folderPath""." | Out-File "$driveLetter\$logs\monthlycleanup.log" -Append
+    Write-Output "PST Import Service [Version $version], `$(Get-Date -Format 'u'): First day of the month - Therefore, content have been cleared from folder ""$folderPath""." | Out-File "$driveLetter\$logs\monthlycleanup.log" -Append
 } else {
-    Write-Output "`PST Import Service [Version $version], $(Get-Date -Format 'u'): Not first day of the month - No need to content cleanup." | Out-File "$driveLetter\$logs\monthlycleanup.log" -Append
+    Write-Output "PST Import Service [Version $version], `$(Get-Date -Format 'u'): Not first day of the month - No need to content cleanup." | Out-File "$driveLetter\$logs\monthlycleanup.log" -Append
 }
 "@
 
