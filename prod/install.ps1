@@ -7,7 +7,7 @@
     NOTE: You need to do some preparations before and after deploying this script. Please check preparation instructions from GitHub.
 
 .VERSION
-    20250503
+    20250504
 
 .AUTHOR
     Jan Parttimaa (https://github.com/janparttimaa/pst-import-service)
@@ -22,13 +22,16 @@
 .RELEASE NOTES
     20250309 - Initial release.
     20250311 - Added command that says when script will be closed after all needed things are done.
-    20250503 - Added scheduled task for retention period. Hidden PST Import Service -folder will be cleared out of contents every 1 day of the month at 0:00 local time.
+    20250504 - Added scheduled task for retention period. Hidden PST Import Service -folder will be cleared out of contents every 1 day of the month at 0:00 local time.
              - Log of the retention period actions can be found from "Logs\monthlycleanup.log" folder from the drive letter where PST Import Service is.
 
 .EXAMPLE
     powershell.exe -ExecutionPolicy Bypass -File .\install.ps1
     This example is how to run this script running Windows PowerShell. Run this command with your admin rights.
 #>
+
+# Set variable for version
+$version = "20250504"
 
 # Function to check if the drive letter exists
 function Get-ValidDriveLetter {
@@ -93,7 +96,7 @@ $batchScript = @"
 @echo off
 chcp 65001>nul
 TITLE PST Import Service
-echo PST Import Service [Version 20250309]  && echo (c) 2024-2025 Jan Parttimaa. All rights reserved.
+echo PST Import Service [Version $version]  && echo (c) 2024-2025 Jan Parttimaa. All rights reserved.
 echo.
 echo Type username of employee which PST-files will be imported and press Enter.
 echo.
@@ -134,9 +137,9 @@ $scriptContent = @"
 
 if ((Get-Date).Day -eq 1) {
     Get-ChildItem -Path "$folderPath" -Recurse -Force | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
-    Write-Output "`$(Get-Date -Format 'u'): First day of the month - Therefore, content have been cleared from folder ""$folderPath""." | Out-File "$driveLetter\$logs\monthlycleanup.log" -Append
+    Write-Output "`PST Import Service [Version $version], $(Get-Date -Format 'u'): First day of the month - Therefore, content have been cleared from folder ""$folderPath""." | Out-File "$driveLetter\$logs\monthlycleanup.log" -Append
 } else {
-    Write-Output "`$(Get-Date -Format 'u'): Not first day of the month - No need to content cleanup." | Out-File "$driveLetter\$logs\monthlycleanup.log" -Append
+    Write-Output "`PST Import Service [Version $version], $(Get-Date -Format 'u'): Not first day of the month - No need to content cleanup." | Out-File "$driveLetter\$logs\monthlycleanup.log" -Append
 }
 "@
 
@@ -151,7 +154,7 @@ Write-Host "Folders and files for PST Import Service created successfully to spe
 
 # Set variables to scheduled task
 $taskName = "PST Import Service - Monthly Cleanup"
-$description = "This task will make sure that hidden folder ""PST Import Service$"" will be cleared up first day every month"
+$description = "This task will make sure that hidden folder ""PST Import Service$"" will be cleared up first day every month."
 $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File $driveLetter\$tools\monthlycleanup.ps1"
 $author = "Jan Parttimaa"
 
