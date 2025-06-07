@@ -79,9 +79,8 @@ $extractedFolder = Get-ChildItem -Path "$driveLetter\$tools" | Where-Object { $_
 
 # Check if existing old file azcopy.exe exists at the destination
 if (Test-Path -Path "$driveLetter\$tools\azcopy.exe") {
-    # Remove existing old file of azcopy.exe
     Remove-Item -Path "$driveLetter\$tools\azcopy.exe" -Force
-    }
+}
 
 # Move azcopy.exe to Tools folder and delete the zip file and extracted folder
 Write-Host "Moving azcopy.exe to Tools folder..." -Verbose
@@ -115,62 +114,93 @@ Set-Content -Path $batchScriptPath -Value $batchScript -Verbose
 
 # Create shortcut to "pstis.bat" in the root of the specified drive
 Write-Host "Creating shortcut to ""pstis.bat"" in the root of the specified drive..." -Verbose
-
 $shortcut = New-Object -ComObject WScript.Shell
 $shortcutPath = "$driveLetter\Execute PST Import Service.lnk"
 $shortcutTarget = $batchScriptPath
-$shortcutIcon = $batchScriptPath  # Set the icon to the .bat file itself
+$shortcutIcon = $batchScriptPath
 $shortcutShortcut = $shortcut.CreateShortcut($shortcutPath)
 $shortcutShortcut.TargetPath = $shortcutTarget
 $shortcutShortcut.IconLocation = $shortcutIcon
 $shortcutShortcut.Save()
 
-# Create PowerShell-script, that will cleanup PST Import Service first day of every month
-Write-Host "Creating script for monthly cleanups for hidden ""PST Import Service"" -folder..." -Verbose
-
+# Create updated PowerShell script for 30-day cleanup
+Write-Host "Creating updated script for cleaning up folders older than 30 days in hidden ""PST Import Service"" -folder..." -Verbose
 $targetScriptPath = "$driveLetter\$tools\monthlycleanup.ps1"
-$folderPath = "$driveLetter\$pstImportService" 
+$folderPath = "$driveLetter\$pstImportService"
+$logPath = "$driveLetter\$logs\monthlycleanup.log"
+$versionTag = $version
 
-# Define the content of the new script with concatenation
 $scriptContent = @"
-# Cleanup hidden PST Import Service -folder from content every first day of every month
+# Number of days to keep folders (folders older than this will be deleted)
+\$retentionDays = 30
 
-if ((Get-Date).Day -eq 1) {
-    Get-ChildItem -Path "$folderPath" -Recurse -Force | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
-    Write-Output "PST Import Service [Version $version], `$(Get-Date -Format 'u'): First day of the month - Therefore, content have been cleared from folder ""$folderPath""." | Out-File "$driveLetter\$logs\monthlycleanup.log" -Append
+# Get the current date for comparison
+\$currentDate = Get-Date
+
+# Flag to track whether any deletion occurred
+\$deletionOccurred = \$false
+
+# Define the target path
+\$targetPath = "$folderPath"
+
+# Define the target path for log file
+\$log = "$logPath"
+
+# Check if the target path exists
+if (Test-Path \$targetPath) {
+
+    # Get all subdirectories in the target path, including hidden ones
+    \$subFolders = Get-ChildItem -Path \$targetPath -Directory -Force
+
+    # Loop through each subfolder
+    foreach (\$folder in \$subFolders) {
+
+        # Calculate the age of the folder in days based on its creation date
+        \$folderAge = (\$currentDate - \$folder.CreationTime).Days
+
+        # If the folder is older than the retention period, delete it
+        if (\$folderAge -gt \$retentionDays) {
+            try {
+                Remove-Item -Path \$folder.FullName -Recurse -Force -ErrorAction Stop
+                Write-Output "PST Import Service [Version $versionTag], \$(Get-Date -Format 'u'): Deleted folder '\$($folder.FullName)' - Older than \$retentionDays days." | Out-File \$log -Append
+                \$deletionOccurred = \$true
+            } catch {
+                Write-Output "PST Import Service [Version $versionTag], \$(Get-Date -Format 'u'): ERROR deleting folder '\$($folder.FullName)': \$_" | Out-File \$log -Append
+            }
+        }
+    }
+
+    if (-not \$deletionOccurred) {
+        Write-Output "PST Import Service [Version $versionTag], \$(Get-Date -Format 'u'): No folders older than \$retentionDays days found in '\$targetPath' - No deletions performed." | Out-File \$log -Append
+    }
+
 } else {
-    Write-Output "PST Import Service [Version $version], `$(Get-Date -Format 'u'): Not first day of the month - No need to content cleanup." | Out-File "$driveLetter\$logs\monthlycleanup.log" -Append
+    Write-Output "PST Import Service [Version $versionTag], \$(Get-Date -Format 'u'): Target folder '\$targetPath' does not exist." | Out-File \$log -Append
 }
 "@
 
-# Replace placeholders with actual values
-$scriptContent = $scriptContent -replace '\$driveLetter', $driveLetter -replace '\$folderPath', $folderPath -replace '\$placeholder', (Get-Date -Format 'u')
-
-# Create the new script and write the content to it
 New-Item -Path $targetScriptPath -ItemType File -Force
-Set-Content -Path $targetScriptPath -Value $scriptContent
+Set-Content -Path $targetScriptPath -Value $scriptContent -Verbose
 
 Write-Host "Folders and files for PST Import Service created successfully to specified drive. Creating scheduled task..." -Verbose
 
 # Set variables to scheduled task
 $taskName = "PST Import Service - Monthly Cleanup"
-$description = "This task will make sure that hidden folder ""PST Import Service$"" will be cleared up first day every month."
-$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File $driveLetter\$tools\monthlycleanup.ps1"
+$description = "This task will delete folders older than 30 days from ""PST Import Service$"" folder."
+$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File $targetScriptPath"
 $author = "Jan Parttimaa"
 
 # Create a daily trigger at 00:00
 $trigger = New-ScheduledTaskTrigger -Daily -At 00:00
 
-# Define task settings, ensuring it will start on batteries and continue even if not idle
+# Task settings
 $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable:$false -AllowStartIfOnBatteries:$true -DontStopOnIdleEnd:$true -DisallowHardTerminate:$false -DontStopIfGoingOnBatteries:$true -ExecutionTimeLimit (New-TimeSpan -Hours 1)
 
-# Define the principal with highest privileges
+# Principal with SYSTEM account and highest privileges
 $principal = New-ScheduledTaskPrincipal -UserId "SYSTEM" -LogonType ServiceAccount -RunLevel Highest
 
-# Register the task
+# Register and update scheduled task
 Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings -Principal $principal -Description $description -Force
-
-# Set author to the scheduled task
 $taskObject = Get-ScheduledTask $taskName
 $taskObject.Author = $author
 $taskObject | Set-ScheduledTask
