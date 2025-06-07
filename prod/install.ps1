@@ -7,7 +7,7 @@
     NOTE: You need to do some preparations before and after deploying this script. Please check preparation instructions from GitHub.
 
 .VERSION
-    20250504
+    20250607
 
 .AUTHOR
     Jan Parttimaa (https://github.com/janparttimaa/pst-import-service)
