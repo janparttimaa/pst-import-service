@@ -189,6 +189,7 @@ if (Test-Path $targetPath) {
 # Replace placeholders
 $scriptContent = $scriptContent -replace 'REPLACE_FOLDER_PATH', $targetFolderPath
 $scriptContent = $scriptContent -replace 'REPLACE_LOG_PATH', $logPath
+$scriptContent = $scriptContent -replace '\[Version "\$version"\]', "[Version $version]"
 
 # Write the content to the file
 Set-Content -Path $targetScriptPath -Value $scriptContent -Encoding UTF8 -Force
