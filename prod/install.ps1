@@ -7,7 +7,7 @@
     NOTE: You need to do some preparations before and after deploying this script. Please check preparation instructions from GitHub.
 
 .VERSION
-    20250607
+    20250608
 
 .AUTHOR
     Jan Parttimaa (https://github.com/janparttimaa/pst-import-service)
@@ -24,7 +24,7 @@
     20250311 - Added command that says when script will be closed after all needed things are done.
     20250504 - Added scheduled task for retention period. Hidden PST Import Service -folder will be cleared out of contents every 1 day of the month at 0:00 local time.
              - Log of the retention period actions can be found from "Logs\monthlycleanup.log" folder from the drive letter where PST Import Service is.
-    20250607 - Fully integrated creation of monthlycleanup.ps1 script within install.ps1.
+    20250608 - Fully integrated creation of monthlycleanup.ps1 script within install.ps1.
              - Replaced old logic with enhanced version that:
                  * Checks for folder existence before cleanup.
                  * Logs detailed status (deletion, skip, error).
@@ -37,7 +37,7 @@
 #>
 
 # Set variable for version
-$version = "20250607"
+$version = "20250608"
 
 # Function to check if the drive letter exists
 function Get-ValidDriveLetter {
