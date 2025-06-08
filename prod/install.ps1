@@ -130,63 +130,68 @@ $shortcutShortcut.IconLocation = $shortcutIcon
 $shortcutShortcut.Save()
 
 # Create updated PowerShell script for 30-day cleanup
-Write-Host "Creating updated script for cleaning up folders older than 30 days in hidden ""PST Import Service"" -folder..." -Verbose
-$targetScriptPath = "$driveLetter\$tools\monthlycleanup.ps1"
-$folderPath = "$driveLetter\$pstImportService"
-$logPath = "$driveLetter\$logs\monthlycleanup.log"
-$versionTag = $version
+# Create PowerShell-script that will cleanup PST Import Service subfolders older than 30 days
+Write-Host "Creating script for monthly cleanups for hidden ""PST Import Service"" -folder..." -Verbose
 
-$scriptContent = @"
+$targetScriptPath = "$driveLetter\$tools\monthlycleanup.ps1"
+$logPath = "$driveLetter\$logs\monthlycleanup.log"
+$targetFolderPath = "$driveLetter\$pstImportService"
+
+$scriptContent = @'
 # Number of days to keep folders (folders older than this will be deleted)
-\$retentionDays = 30
+$retentionDays = 30
 
 # Get the current date for comparison
-\$currentDate = Get-Date
+$currentDate = Get-Date
 
 # Flag to track whether any deletion occurred
-\$deletionOccurred = \$false
+$deletionOccurred = $false
 
 # Define the target path
-\$targetPath = "$folderPath"
+$targetPath = "REPLACE_FOLDER_PATH"
 
 # Define the target path for log file
-\$log = "$logPath"
+$log = "REPLACE_LOG_PATH"
 
 # Check if the target path exists
-if (Test-Path \$targetPath) {
+if (Test-Path $targetPath) {
 
     # Get all subdirectories in the target path, including hidden ones
-    \$subFolders = Get-ChildItem -Path \$targetPath -Directory -Force
+    $subFolders = Get-ChildItem -Path $targetPath -Directory -Force
 
     # Loop through each subfolder
-    foreach (\$folder in \$subFolders) {
+    foreach ($folder in $subFolders) {
 
         # Calculate the age of the folder in days based on its creation date
-        \$folderAge = (\$currentDate - \$folder.CreationTime).Days
+        $folderAge = ($currentDate - $folder.CreationTime).Days
 
         # If the folder is older than the retention period, delete it
-        if (\$folderAge -gt \$retentionDays) {
+        if ($folderAge -gt $retentionDays) {
             try {
-                Remove-Item -Path \$folder.FullName -Recurse -Force -ErrorAction Stop
-                Write-Output "PST Import Service [Version $versionTag], \$(Get-Date -Format 'u'): Deleted folder '\$($folder.FullName)' - Older than \$retentionDays days." | Out-File \$log -Append
-                \$deletionOccurred = \$true
+                Remove-Item -Path $folder.FullName -Recurse -Force -ErrorAction Stop
+                Write-Output "PST Import Service [Version 20250607], $(Get-Date -Format 'u'): Deleted folder '$($folder.FullName)' - Older than $retentionDays days." | Out-File $log -Append
+                $deletionOccurred = $true
             } catch {
-                Write-Output "PST Import Service [Version $versionTag], \$(Get-Date -Format 'u'): ERROR deleting folder '\$($folder.FullName)': \$_" | Out-File \$log -Append
+                Write-Output "PST Import Service [Version 20250607], $(Get-Date -Format 'u'): ERROR deleting folder '$($folder.FullName)': $_" | Out-File $log -Append
             }
         }
     }
 
-    if (-not \$deletionOccurred) {
-        Write-Output "PST Import Service [Version $versionTag], \$(Get-Date -Format 'u'): No folders older than \$retentionDays days found in '\$targetPath' - No deletions performed." | Out-File \$log -Append
+    if (-not $deletionOccurred) {
+        Write-Output "PST Import Service [Version 20250607], $(Get-Date -Format 'u'): No folders older than $retentionDays days found in '$targetPath' - No deletions performed." | Out-File $log -Append
     }
 
 } else {
-    Write-Output "PST Import Service [Version $versionTag], \$(Get-Date -Format 'u'): Target folder '\$targetPath' does not exist." | Out-File \$log -Append
+    Write-Output "PST Import Service [Version 20250607], $(Get-Date -Format 'u'): Target folder '$targetPath' does not exist." | Out-File $log -Append
 }
-"@
+'@
 
-New-Item -Path $targetScriptPath -ItemType File -Force
-Set-Content -Path $targetScriptPath -Value $scriptContent -Verbose
+# Replace placeholders
+$scriptContent = $scriptContent -replace 'REPLACE_FOLDER_PATH', [Regex]::Escape($targetFolderPath)
+$scriptContent = $scriptContent -replace 'REPLACE_LOG_PATH', [Regex]::Escape($logPath)
+
+# Write the content to the file
+Set-Content -Path $targetScriptPath -Value $scriptContent -Encoding UTF8 -Force
 
 Write-Host "Folders and files for PST Import Service created successfully to specified drive. Creating scheduled task..." -Verbose
 
