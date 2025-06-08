@@ -169,27 +169,27 @@ if (Test-Path $targetPath) {
         if ($folderAge -gt $retentionDays) {
             try {
                 Remove-Item -Path $folder.FullName -Recurse -Force -ErrorAction Stop
-                Write-Output "PST Import Service [Version $version], $(Get-Date -Format 'u'): Deleted folder '$($folder.FullName)' - Older than $retentionDays days." | Out-File $log -Append
+                Write-Output "PST Import Service [Version __VERSION__], $(Get-Date -Format 'u'): Deleted folder '$($folder.FullName)' - Older than $retentionDays days." | Out-File $log -Append
                 $deletionOccurred = $true
             } catch {
-                Write-Output "PST Import Service [Version $version], $(Get-Date -Format 'u'): ERROR deleting folder '$($folder.FullName)': $_" | Out-File $log -Append
+                Write-Output "PST Import Service [Version __VERSION__], $(Get-Date -Format 'u'): ERROR deleting folder '$($folder.FullName)': $_" | Out-File $log -Append
             }
         }
     }
 
     if (-not $deletionOccurred) {
-        Write-Output "PST Import Service [Version $version], $(Get-Date -Format 'u'): No folders older than $retentionDays days found in '$targetPath' - No deletions performed." | Out-File $log -Append
+        Write-Output "PST Import Service [Version __VERSION__], $(Get-Date -Format 'u'): No folders older than $retentionDays days found in '$targetPath' - No deletions performed." | Out-File $log -Append
     }
 
 } else {
-    Write-Output "PST Import Service [Version $version], $(Get-Date -Format 'u'): Target folder '$targetPath' does not exist." | Out-File $log -Append
+    Write-Output "PST Import Service [Version __VERSION__], $(Get-Date -Format 'u'): Target folder '$targetPath' does not exist." | Out-File $log -Append
 }
 '@
 
 # Replace placeholders
 $scriptContent = $scriptContent -replace 'REPLACE_FOLDER_PATH', $targetFolderPath
 $scriptContent = $scriptContent -replace 'REPLACE_LOG_PATH', $logPath
-$scriptContent = $scriptContent -replace '\[Version "\$version"\]', "[Version $version]"
+$scriptContent = $scriptContent -replace '__VERSION__', $version
 
 # Write the content to the file
 Set-Content -Path $targetScriptPath -Value $scriptContent -Encoding UTF8 -Force
