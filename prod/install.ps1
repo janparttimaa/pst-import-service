@@ -198,7 +198,7 @@ Write-Host "Folders and files for PST Import Service created successfully to spe
 
 # Set variables to scheduled task
 $taskName = "PST Import Service - Monthly Cleanup"
-$description = "This task will delete folders older than 30 days from ""PST Import Service$"" folder."
+$description = "This task will delete folders older than 30 days from ""PST Import Service$"" folder.`n`More information: https://github.com/janparttimaa/pst-import-service"
 $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File $targetScriptPath"
 $author = "Jan Parttimaa"
 
