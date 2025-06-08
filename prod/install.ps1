@@ -169,7 +169,7 @@ if (Test-Path $targetPath) {
         if ($folderAge -gt $retentionDays) {
             try {
                 Remove-Item -Path $folder.FullName -Recurse -Force -ErrorAction Stop
-                Write-Output "PST Import Service [Version ($version], $(Get-Date -Format 'u'): Deleted folder '$($folder.FullName)' - Older than $retentionDays days." | Out-File $log -Append
+                Write-Output "PST Import Service [Version $version], $(Get-Date -Format 'u'): Deleted folder '$($folder.FullName)' - Older than $retentionDays days." | Out-File $log -Append
                 $deletionOccurred = $true
             } catch {
                 Write-Output "PST Import Service [Version $version], $(Get-Date -Format 'u'): ERROR deleting folder '$($folder.FullName)': $_" | Out-File $log -Append
