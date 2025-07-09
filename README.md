@@ -90,8 +90,11 @@ Here is the example of GPO:
 
 Make sure that when user have removed from security group, network drive will be also removed from user automatically.
 
-## Scheduled task and its log (Starting version 20250504)
+## Scheduled task and its log (Starting version 20250504 and later)
 Starting with version 20250504, installation script will implement scheduled task to Terminal Server that will clear our hidden PST Import Service folder from all of its contents on every 1 day of the month at 00:00 local time. This will make sure, that we have retention period set inplace to the PST Import Service if IT personnel forgets to delete the content(s) after uploading them to Azure Blob Storage.
+
+> [!NOTE]  
+> **Starting with version 20250709, we have enhanced this even further.** Instead clearing all contents from hidden PST Import Service folder on every 1 day of the month, Scheduled Task will instead clear our content, that have been on the folder older than 30 days. This enhancement will make sure, that every user have equal amount of retention time.
 
 Log of the retention period actions can be found from "Logs\monthlycleanup.log" folder from the drive letter where PST Import Service is locating on the Terminal Server.
 
@@ -103,3 +106,10 @@ Here is the example screenshot of the content of the log:
 
 ## Updating PST Import Service
 If you want to update PST Import Service with latest changes and big fixes, just run the latest version of installation script again with your admin rights on your Terminal Server, where you have originally run the installation script.
+
+## Data Retention Period (Starting version 20250709 and later)
+Here are the configured data retention periods:
+
+| Location | Maximum Retention Period | Notes |
+|-------|-------|-------|
+| PST Import Service$ | 30 days | Files, that have been on this hidden folder more than 30 days, will be automatically deleted to make sure, we are not retain any user data forever or if IT personnel have forgot to delete imported PST-files after the migration process. |
